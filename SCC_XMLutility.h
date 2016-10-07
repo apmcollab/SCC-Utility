@@ -1,23 +1,23 @@
 /*
- * UCLAQ_XMLutility.h
+ * SCC_XMLutility.h
  *
  *  Created on: Apr 15, 2016
  *      Author: anderson
  */
 //
-// Utility functions for UCLAQ class operators
+// Utility functions for SCC class operators
 // involving XML_ParameterListArray
 //
-#ifndef _UCLAQ_XMLutilty_
-#define _UCLAQ_XMLutilty_
+#ifndef _SCC_XMLutilty_
+#define _SCC_XMLutilty_
 
 #include "XML_ParameterList/XML_ParameterListArray.h"
 
-#include "GridFunctionNd/UCLAQ_GridFunction1d.h"
-#include "GridFunctionNd/UCLAQ_GridFunction2d.h"
-#include "GridFunctionNd/UCLAQ_GridFunction3d.h"
+#include "GridFunctionNd/SCC_GridFunction1d.h"
+#include "GridFunctionNd/SCC_GridFunction2d.h"
+#include "GridFunctionNd/SCC_GridFunction3d.h"
 
-namespace UCLAQ
+namespace SCC
 {
 
 class XMLutility
@@ -133,7 +133,7 @@ void XMLinitialize(XML_ParameterListArray& paramList, GridFunction3d& G)
 
 };
 
-} // UCLAQ namespace
+} // SCC namespace
 
 
-#endif /* _UCLAQ_XMLutilty_ */
+#endif /* _SCC_XMLutilty_ */
