@@ -48,6 +48,7 @@ const char to_base64[65] =
             "abcdefghijklmnopqrstuvwxyz"
             "0123456789+/";
 
+
 std::string encodeInt(const std::vector<int>& intData)
 {
 	if (intData.empty()) return "";
