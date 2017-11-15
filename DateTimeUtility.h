@@ -1,11 +1,11 @@
 /*
- * TimeHash.h
+ * DateTimeUtility.h
  *
- *  Created on: May 17, 2016
+ *  Created on: Jun 15, 2017
  *      Author: anderson
  */
 
-/*
+ /*
 #############################################################################
 #
 # Copyright 2017 Chris Anderson
@@ -26,35 +26,45 @@
 #############################################################################
 */
 
+#ifndef _DateTimeUtility_
+#define _DateTimeUtility_
 
-#ifndef _TimeHash_
-#define _TimeHash_
-
-#include <functional>
 #include <string>
 #include <ctime>
-#include <cstdint>
 using namespace std;
 
-class TimeHash
+#include "STDstringUtilities.h"
+
+class DateTimeUtility
 {
 public:
 
-	TimeHash(){};
-	virtual ~TimeHash(){};
+string getAsciiTime()
+{
+    STDstringUtilities stringUtil;
+    struct tm when; time_t now; time(&now); when = *localtime( &now );
+	string timeString = asctime(&when);
+	timeString = stringUtil.trim(timeString);
+	return timeString;
+}
 
-	// To facilitate reading and writing binary representations
-	// of the hash, this routine returns a hash of the time string
-	// as an std::uint64_t, a fixed width size integer.
+// To facilitate reading and writing binary representations
+// of the hash, this routine returns a hash of the time string
+// as an std::uint64_t, a fixed width size integer.
 
-	std::uint64_t getTimeHash()
-	{
-		time_t rawtime;
-		time (&rawtime);
-		std::size_t timeHash = str_hash(ctime(&rawtime));
-		return (std::uint64_t)timeHash;
-	}
-	std::hash<std::string> str_hash;
+std::uint64_t getTimeHash()
+{
+    time_t rawtime;
+    time (&rawtime);
+    std::size_t timeHash = str_hash(ctime(&rawtime));
+    return (std::uint64_t)timeHash;
+}
+std::hash<std::string> str_hash;
+
+
 };
-#endif
 
+
+
+
+#endif /* +DateTimeUtility_ */
