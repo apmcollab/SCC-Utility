@@ -1,14 +1,14 @@
 /*
- * TimeHash.h
+ * IOutility.h
  *
- *  Created on: May 17, 2016
+ *  Created on: Jul 6, 2017
  *      Author: anderson
  */
 
 /*
 #############################################################################
 #
-# Copyright 2017 Chris Anderson
+# Copyright 2016 Chris Anderson
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the Lesser GNU General Public License as published by
@@ -27,34 +27,26 @@
 */
 
 
-#ifndef _TimeHash_
-#define _TimeHash_
-
-#include <functional>
+#include <sys/stat.h>
 #include <string>
-#include <ctime>
-#include <cstdint>
 using namespace std;
 
-class TimeHash
+#ifndef SCC_UTILITY_IOUTILITY_H_
+#define SCC_UTILITY_IOUTILITY_H_
+
+class IOutility
 {
+
 public:
 
-	TimeHash(){};
-	virtual ~TimeHash(){};
+inline bool isFile(const std::string& name)
+{
+  struct stat buffer;
+  return (stat (name.c_str(), &buffer) == 0);
+}
 
-	// To facilitate reading and writing binary representations
-	// of the hash, this routine returns a hash of the time string
-	// as an std::uint64_t, a fixed width size integer.
-
-	std::uint64_t getTimeHash()
-	{
-		time_t rawtime;
-		time (&rawtime);
-		std::size_t timeHash = str_hash(ctime(&rawtime));
-		return (std::uint64_t)timeHash;
-	}
-	std::hash<std::string> str_hash;
 };
-#endif
 
+
+
+#endif /* SCC_UTILITY_IOUTILITY_H_ */
