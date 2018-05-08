@@ -33,6 +33,13 @@ class ParameterMap : public  std::map<string, SCC::DataType>
 	return defaultValue;
 	}
 
+    void setParameters(const ParameterMap& P)
+    {
+	for(auto it =  P.cbegin(); it !=  P.cend(); ++it)
+	{
+		this->operator[](it->first) = it->second;
+	}
+    }
 
 	friend ostream& operator<<(ostream& outStream, const SCC::ParameterMap& P)
 	{
