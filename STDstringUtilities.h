@@ -1,6 +1,8 @@
 #ifndef _STDstringUtilities_
 #define _STDstringUtilities_
 
+#include <sys/stat.h>
+
 #include <string>
 #include <vector>
 #include <cctype>
@@ -29,6 +31,8 @@
 
 
 #define SPACES " \t\r\n"
+
+#define _LOCAL_PATH_MAX 4096
 
 class STDstringUtilities
 {
@@ -205,5 +209,6 @@ bool fileExists(const std::string fileName)
 
 };
 
+#undef _LOCAL_PATH_MAX
 #undef SPACES
 #endif
