@@ -58,77 +58,7 @@ inline std::string trim (const std::string & s, const std::string & t = SPACES)
   }  // end of trim
   
 
-std::string getBaseFilename(const std::string& filename)
-{
-    size_t pos = filename.rfind(".");
-    if(pos == std::string::npos)  //No extension.
-        return filename;
 
-    if(pos == 0)    //. is at the front. Not an extension.
-        return filename;
-    return filename.substr(0, pos);
-}
-
-void Tokenize(const std::string& str,std::vector<std::string>& tokens, const std::string& delimiters = " ")
-{
-    // Skip delimiters at beginning.
-    std::string::size_type lastPos = str.find_first_not_of(delimiters, 0);
-    // Find first "non-delimiter".
-    std::string::size_type pos     = str.find_first_of(delimiters, lastPos);
-
-    while (std::string::npos != pos || std::string::npos != lastPos)
-    {
-        // Found a token, add it to the vector.
-        tokens.push_back(str.substr(lastPos, pos - lastPos));
-        // Skip delimiters.  Note the "not_of"
-        lastPos = str.find_first_not_of(delimiters, pos);
-        // Find next "non-delimiter"
-        pos = str.find_first_of(delimiters, lastPos);
-    }
-}
-
-//
-// If a file with name fileName does not exist then an empty string is returned.
-//
-std::string getBasePath(std::string fileName)
-{
-	const char *symlinkpath = fileName.c_str();
-	char *actualpath;
-
-	std::string actualPath;
-	std::string   basePath;
-    actualpath = realpath(symlinkpath, NULL);
-    if (actualpath != NULL)
-    {
-    	actualPath.assign(actualpath);
-    	free(actualpath);
-    	basePath = actualPath.substr(0,actualPath.find_last_of("/\\"));
-    	return basePath;
-   }
-   return basePath;
-}
-
-std::string getBaseName(std::string fileName)
-{
-	const char *symlinkpath = fileName.c_str();
-	char *actualpath;
-
-	std::string actualPath;
-	std::string   baseName;
-    actualpath = realpath(symlinkpath, NULL);
-    if (actualpath != NULL)
-    {
-    	actualPath.assign(actualpath);
-    	free(actualpath);
-    	baseName = actualPath.substr(actualPath.find_last_of("/\\")+1);
-    	return baseName;
-   }
-   else // Just strip away all directory modifiers
-   {
-	baseName = fileName.substr(fileName.find_last_of("/\\")+1);
-   }
-   return baseName;
-}
 
 void replaceFirstSubstring(std::string& str,const std::string& str1,const std::string& str2)
 {
@@ -159,6 +89,119 @@ void toLower(std::string& str)
 	std::transform(str.begin(), str.end(), str.begin(),[](unsigned char c)
 	{return std::tolower(c); });
 }
+
+
+std::string getBaseFilename(const std::string& filename)
+{
+    size_t pos = filename.rfind(".");
+    if(pos == std::string::npos)  //No extension.
+        return filename;
+
+    if(pos == 0)    //. is at the front. Not an extension.
+        return filename;
+    return filename.substr(0, pos);
+}
+
+void Tokenize(const std::string& str,std::vector<std::string>& tokens, const std::string& delimiters = " ")
+{
+    // Skip delimiters at beginning.
+    std::string::size_type lastPos = str.find_first_not_of(delimiters, 0);
+    // Find first "non-delimiter".
+    std::string::size_type pos     = str.find_first_of(delimiters, lastPos);
+
+    while (std::string::npos != pos || std::string::npos != lastPos)
+    {
+        // Found a token, add it to the vector.
+        tokens.push_back(str.substr(lastPos, pos - lastPos));
+        // Skip delimiters.  Note the "not_of"
+        lastPos = str.find_first_not_of(delimiters, pos);
+        // Find next "non-delimiter"
+        pos = str.find_first_of(delimiters, lastPos);
+    }
+}
+
+//#####################################################
+//  Utilities for string containing file names 
+//
+//  Since code w.r.t. file and path names os OS specific,
+//  separate versions are required for
+//  Linux/Unix systems (the default) and Microsoft OS's. 
+//#####################################################
+std::string getBasePath(const std::string& fileName)
+{
+	const char *symlinkpath = fileName.c_str();
+	char *actualpath;
+    char pathBuffer[_LOCAL_PATH_MAX];
+	string actualPath;
+	string   basePath;
+	#ifndef _MSC_VER
+    actualpath =   realpath(symlinkpath, pathBuffer);
+    #else
+    actualpath =  _fullpath(pathBuffer,symlinkpath,_LOCAL_PATH_MAX);
+    #endif
+
+    if (actualpath != NULL)
+    {
+        actualPath.assign(actualpath);
+    	basePath   = actualPath.substr(0,actualPath.find_last_of("/\\"));
+    	return basePath;
+   }
+   return basePath;
+}
+
+std::string getCWD()
+{
+	char *actualpath;
+	std::string actualPath;
+	char   pathBuffer[_LOCAL_PATH_MAX];
+
+#ifndef _MSC_VER
+	actualpath = realpath("./", pathBuffer);
+#else
+	actualpath = _fullpath(pathBuffer, "./", _LOCAL_PATH_MAX);
+#endif
+
+    if (actualpath != NULL)
+    {
+    	actualPath.assign(actualpath);
+   }
+   return actualPath;
+}
+
+std::string getBaseName(std::string& fileName)
+{
+	const char *symlinkpath = fileName.c_str();
+	char *actualpath;
+
+	std::string actualPath;
+	std::string   baseName;
+	char   pathBuffer[_LOCAL_PATH_MAX];
+
+#ifndef _MSC_VER
+	actualpath = realpath(symlinkpath, pathBuffer);
+#else
+	actualpath = _fullpath(pathBuffer, symlinkpath, _LOCAL_PATH_MAX);
+#endif
+    if (actualpath != NULL)
+    {
+    	actualPath.assign(actualpath);
+    	baseName = actualPath.substr(actualPath.find_last_of("/\\")+1);
+    	return baseName;
+   }
+   else // Just strip away all directory modifiers
+   {
+	baseName = fileName.substr(fileName.find_last_of("/\\")+1);
+   }
+   return baseName;
+}
+
+bool fileExists(const std::string fileName)
+{
+	struct stat buffer;
+	return (stat(fileName.c_str(), &buffer) == 0);
+}
+
+
 
 };
 
