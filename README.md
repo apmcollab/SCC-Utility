@@ -3,7 +3,7 @@ A collection of miscellaneous class and functions useful for tasks that arise in
 ### Prerequisites
 C++11
 ### Versioning
-Release : 18.09.04
+Release : 19.12.16
 ### Authors
 Chris Anderson
 ### License
