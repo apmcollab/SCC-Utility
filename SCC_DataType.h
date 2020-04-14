@@ -37,18 +37,16 @@ are not implemented for the objects of this class.
 #############################################################################
 */
 
-#ifndef _DataType_
-#define _DataType_
+#ifndef  DataType_
+#define  DataType_
 #include <string>
 #include <iostream>
 #include <sstream>
 #include <cstdlib>
-using namespace std;
+#include <stdexcept>
 
 namespace SCC
 {
-
-
 class  DataType
 {
 
@@ -59,7 +57,7 @@ public :
     long    l;
     float   f;
     double  d;
-    string  s;
+    std::string  s;
     void*   v;
     int  type_name;
 
@@ -155,7 +153,7 @@ DataType(double A ): s()
     type_name = TYPE_DOUBLE;
 }
 
-DataType(const string& A ): s(A)
+DataType(const std::string& A ): s(A)
 {
 	b = false;
     i = 0;
@@ -234,7 +232,7 @@ DataType(double* A ): s()
     type_name = TYPE_DOUBLE_PTR;
 }
 
-DataType(string* A): s()
+DataType(std::string* A): s()
 {
 	b = false;
     i = 0;
@@ -297,7 +295,7 @@ DataType&  operator =( const DataType& A)
 //                    OUTPUT
 //********************************************************************************
 //
-friend ostream&  operator <<(ostream& out_stream, const DataType& A)
+friend std::ostream&  operator <<(std::ostream& out_stream, const DataType& A)
 {
 //
 //  Default Output  : Memberwise Output
@@ -317,13 +315,13 @@ friend ostream&  operator <<(ostream& out_stream, const DataType& A)
      case TYPE_LONG_PTR     : out_stream << *((long*)(A.v)); break;
      case TYPE_FLOAT_PTR    : out_stream << *((float*)(A.v)); break;
      case TYPE_DOUBLE_PTR   : out_stream << *((double*)(A.v)); break;
-     case TYPE_STRING_PTR   : out_stream << *((string*)(A.v)); break;
+     case TYPE_STRING_PTR   : out_stream << *((std::string*)(A.v)); break;
 
      }
      return out_stream;
 }
 
-friend istream&  operator >>(istream& in_stream, DataType& A)
+friend std::istream&  operator >>(std::istream& in_stream, DataType& A)
 {
 //
 //   Input
@@ -343,7 +341,7 @@ friend istream&  operator >>(istream& in_stream, DataType& A)
      case TYPE_LONG_PTR     : in_stream >> *((long*)(A.v)); break;
      case TYPE_FLOAT_PTR    : in_stream >> *((float*)(A.v)); break;
      case TYPE_DOUBLE_PTR   : in_stream >> *((double*)(A.v)); break;
-     case TYPE_STRING_PTR   : in_stream >> *((string*)(A.v)); break;
+     case TYPE_STRING_PTR   : in_stream >> *((std::string*)(A.v)); break;
 
      }
      return in_stream;
@@ -477,10 +475,10 @@ operator double()
      return d_return;
 }
 
-operator string()
+operator std::string()
 {
 
-     string string_return;
+     std::string string_return;
 
      switch(type_name)
      {
@@ -497,7 +495,7 @@ operator string()
      case TYPE_LONG_PTR  : illegalConversion(); break;
      case TYPE_FLOAT_PTR : illegalConversion(); break;
      case TYPE_DOUBLE_PTR: illegalConversion(); break;
-     case TYPE_STRING_PTR: string_return = (*((string*)(v))); break;
+     case TYPE_STRING_PTR: string_return = (*((std::string*)(v))); break;
      }
      return string_return;
 }
@@ -522,7 +520,7 @@ operator const char*()
      case TYPE_LONG_PTR  : illegalConversion(); break;
      case TYPE_FLOAT_PTR : illegalConversion(); break;
 	 case TYPE_DOUBLE_PTR: illegalConversion(); break;
-	 case TYPE_STRING_PTR: charStar_return = ((string*)(v))->c_str(); break;
+	 case TYPE_STRING_PTR: charStar_return = ((std::string*)(v))->c_str(); break;
      }
 	 return charStar_return;
 }
@@ -650,7 +648,7 @@ void  operator =(double A)
      }
 }
 
-void  operator =(const string& A)
+void  operator =(const std::string& A)
 {
      if(type_name == TYPE_NULL) type_name = TYPE_STRING;
 
@@ -668,7 +666,7 @@ void  operator =(const string& A)
 	 case TYPE_LONG_PTR     : illegalAssignment(); break;
 	 case TYPE_FLOAT_PTR    : illegalAssignment(); break;
 	 case TYPE_DOUBLE_PTR   : illegalAssignment(); break;
-     case TYPE_STRING_PTR   : *((string*)(v)) = A; break;
+     case TYPE_STRING_PTR   : *((std::string*)(v)) = A; break;
 
      }
 }
@@ -692,7 +690,7 @@ void  operator =(const char* A)
      case TYPE_LONG_PTR     : illegalAssignment(); break;
 	 case TYPE_FLOAT_PTR    : illegalAssignment(); break;
 	 case TYPE_DOUBLE_PTR   : illegalAssignment(); break;
-     case TYPE_STRING_PTR   : *((string*)(v)) = A; break;
+     case TYPE_STRING_PTR   : *((std::string*)(v)) = A; break;
      }
 }
 
@@ -702,29 +700,44 @@ void  operator =(const char* A)
 //                    MEMBER_FUNCTIONS
 //******************************************************************************
 //
-/*
-      case TYPE_BOOL     : illegalAssignment(); break;
-     case TYPE_INT      : i = int(A); break;
-     case TYPE_LONG     : l = long(A); break;
-     case TYPE_FLOAT    : f = A; break;
-     case TYPE_DOUBLE   : d = A; break;
-     case TYPE_STRING   : illegalAssignment(); break;
- */
 
-string toString()
+std::string toString()
 {
+
+
 	 std::ostringstream oss(std::ostringstream::out);
-	 string string_return = "NULL";
+	 std::string string_return;
      switch(type_name)
      {
      case TYPE_BOOL     : if(b == true) {string_return = "true"; } else {string_return = "false";}  break;
      case TYPE_INT      : oss << i; string_return = oss.str(); break;
      case TYPE_LONG     : oss << l; string_return = oss.str(); break;
-     case TYPE_FLOAT    : oss.setf(ios::scientific); oss.precision(8);   oss << f; string_return = oss.str(); break;
-     case TYPE_DOUBLE   : oss.setf(ios::scientific); oss.precision(15);  oss << d; string_return = oss.str(); break;
+     case TYPE_FLOAT    : oss.setf(std::ios::scientific); oss.precision(8);   oss << f; string_return = oss.str(); break;
+     case TYPE_DOUBLE   : oss.setf(std::ios::scientific); oss.precision(15);  oss << d; string_return = oss.str(); break;
      case TYPE_STRING   : string_return = s; break;
      }
+
      return string_return;
+
+
+     /*
+     Code using to_string which works but doesn't allow for increasing the number of digits output
+     for a double.
+
+	 std::string string_return;
+     switch(type_name)
+     {
+     case TYPE_BOOL     : if(b == true) {string_return = "true"; } else {string_return = "false";}  break;
+     case TYPE_INT      : return std::to_string(i); break;
+     case TYPE_LONG     : return std::to_string(l); break;
+     case TYPE_FLOAT    : return std::to_string(f); break;
+     case TYPE_DOUBLE   : return std::to_string(d); break;
+     case TYPE_STRING   : string_return = s; break;
+     }
+
+     return string_return;
+     */
+
 }
 void  setType(int type)
 {
@@ -753,7 +766,7 @@ std::string getTypeAsString() const
      case TYPE_LONG     : sReturn =  "long";        break;
      case TYPE_FLOAT    : sReturn =  "float";       break;
      case TYPE_DOUBLE   : sReturn =  "double";      break;
-     case TYPE_STRING   : sReturn =  "std::string"; break;
+     case TYPE_STRING   : sReturn =  "string"; break;
      }
      return sReturn;
 }
@@ -764,16 +777,14 @@ std::string getTypeAsString() const
 //
 static void illegalConversion()
 {
-	const char* ErrMsg =
-	"XML_parameterList Class Error :\n\nIllegal Data Type Conversion";
-	cerr << ErrMsg << endl << endl << endl;
-	cerr << " Fatal Error " << endl;
-	exit(1);
+    std::string errorMsg   =  (std::string)"\nSCC::DataType Class Error :\nIllegal Data Type Conversion" +
+                               (std::string)"XXXXXXX     Program Terminated    XXXXXXXX\n";
+    throw std::invalid_argument(errorMsg);
 }
 static void illegalConversion(int typeA, int typeB)
 {
-	string typeAstring;
-	string typeBstring;
+	std::string typeAstring;
+	std::string typeBstring;
 	switch(typeA)
 	{
      case TYPE_BOOL     : typeAstring.assign("bool")  ; break;
@@ -794,37 +805,33 @@ static void illegalConversion(int typeA, int typeB)
      case TYPE_STRING   : typeBstring.assign("string") ; break;
      case TYPE_NULL     : typeBstring.assign( "null")  ; break;
     }
-    string ErrMsg =
-	"XML_parameterList Class Error :\n\nIllegal Data Type Conversion\n";
-	ErrMsg.append("Attempting to convert a " + typeAstring + " to a " + typeBstring +"\n");
-	cerr << ErrMsg.c_str() << endl << endl << endl;
-	cerr << " Fatal Error " << endl;
-	exit(1);
+
+    std::string errorMsg   =  (std::string)"\nSCC::DataType Class Error :\nIllegal Data Type Conversion\n" +
+                              (std::string)"Attempting to convert a " + typeAstring +
+                              (std::string)" to a " + typeBstring +
+                              (std::string)"\nXXXXXXX     Program Terminated    XXXXXXXX\n";
+    throw std::invalid_argument(errorMsg);
 }
 
 static void nullOperand()
 {
-	const char* ErrMsg =
-	"XML_parameterList Class Error :\n\nNull Operand ";
-	cerr << ErrMsg << endl << endl << endl;
-	cerr << " Fatal Error " << endl;
-	exit(1);
+    std::string errorMsg   =  (std::string)"\nSCC::DataType Class Error :\nNull Operand "  +
+                              (std::string)"\nXXXXXXX     Program Terminated    XXXXXXXX\n";
+    throw std::invalid_argument(errorMsg);
 }
 
 static void illegalAssignment()
 {
-	const char* ErrMsg =
-	"XML_parameterList Class Error :\n\nIllegal Assignment ";
-	cerr << ErrMsg << endl << endl << endl;
-	cerr << " Fatal Error " << endl;
-	exit(1);
+    std::string errorMsg   =  (std::string)"\nSCC::DataType Class Error :\nIllegal Assignment"  +
+                              (std::string)"\nXXXXXXX     Program Terminated    XXXXXXXX\n";
+    throw std::invalid_argument(errorMsg);
 }
 
 
 static void illegalAssignment(int typeA, int typeB)
 {
-	string typeAstring;
-	string typeBstring;
+	std::string typeAstring;
+	std::string typeBstring;
 	switch(typeA)
 	{
      case TYPE_BOOL     : typeAstring.assign("bool")  ; break;
@@ -845,12 +852,19 @@ static void illegalAssignment(int typeA, int typeB)
      case TYPE_STRING   : typeBstring.assign("string") ; break;
      case TYPE_NULL     : typeBstring.assign( "null")  ; break;
     }
-    string ErrMsg =
-	"XML_parameterList Class Error :\n\nIllegal Assignment \n";
-	ErrMsg.append("Attempting to assign a  " + typeAstring + " to a " + typeBstring +"\n");
-	cerr << ErrMsg.c_str() << endl << endl << endl;
-	cerr << " Fatal Error " << endl;
-	exit(1);
+
+    std::string errorMsg   =  (std::string)"\nSCC::DataType Class Error :\nIllegal Assignment\n"  +
+                              (std::string)"Attempting to assign a  " + typeAstring + (std::string)" to a " + typeBstring +
+                              (std::string)"\nXXXXXXX     Program Terminated    XXXXXXXX\n";
+    throw std::invalid_argument(errorMsg);
+
+
+    //std::string ErrMsg =
+	//"XML_parameterList Class Error :\n\nIllegal Assignment \n";
+	//ErrMsg.append("Attempting to assign a  " + typeAstring + " to a " + typeBstring +"\n");
+	//std::cerr << ErrMsg.c_str() << std::endl << std::endl << std::endl;
+	//std::cerr << " Fatal Error " << std::endl;
+	//exit(1);
 }
 
 
