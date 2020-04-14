@@ -1,5 +1,5 @@
-#ifndef _STDstringUtilities_
-#define _STDstringUtilities_
+#ifndef STDstringUtilities_
+#define STDstringUtilities_
 
 #include <sys/stat.h>
 

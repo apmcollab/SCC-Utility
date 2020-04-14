@@ -26,12 +26,12 @@
 #############################################################################
 */
 
-#ifndef _DateTimeUtility_
-#define _DateTimeUtility_
+#ifndef DateTimeUtility_
+#define DateTimeUtility_
 
 #include <string>
 #include <ctime>
-using namespace std;
+#include <cstdint>
 
 #include "STDstringUtilities.h"
 
@@ -39,11 +39,11 @@ class DateTimeUtility
 {
 public:
 
-string getAsciiTime()
+std::string getAsciiTime()
 {
     STDstringUtilities stringUtil;
     struct tm when; time_t now; time(&now); when = *localtime( &now );
-	string timeString = asctime(&when);
+	std::string timeString = asctime(&when);
 	timeString = stringUtil.trim(timeString);
 	return timeString;
 }
@@ -60,8 +60,6 @@ std::uint64_t getTimeHash()
     return (std::uint64_t)timeHash;
 }
 std::hash<std::string> str_hash;
-
-
 };
 
 

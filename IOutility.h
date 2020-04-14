@@ -29,7 +29,6 @@
 
 #include <sys/stat.h>
 #include <string>
-using namespace std;
 
 #ifndef SCC_UTILITY_IOUTILITY_H_
 #define SCC_UTILITY_IOUTILITY_H_
