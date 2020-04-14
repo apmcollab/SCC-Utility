@@ -25,16 +25,13 @@
 #
 #############################################################################
 */
-
-
-#ifndef _TimeHash_
-#define _TimeHash_
-
 #include <functional>
 #include <string>
 #include <ctime>
 #include <cstdint>
-using namespace std;
+
+#ifndef TimeHash_
+#define TimeHash_
 
 class TimeHash
 {

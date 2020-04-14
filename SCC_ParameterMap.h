@@ -10,7 +10,7 @@
  the same instance.
 
  An instance of this class is a std::map object that is
- predefined to be a std::map<string, SCC_DataType> instance.
+ predefined to be a std::map<std::string, SCC_DataType> instance.
 
  The SCC_DataType is a container class for different C++ data types
  with conversions so that the contained data is converted to appropriate
@@ -38,17 +38,18 @@
 #############################################################################
 */
 
-#ifndef _ParameterMap_
-#define _ParameterMap_
-
+#include "SCC_DataType.h"
 #include <map>
 #include <iostream>
-#include "SCC_DataType.h"
+#include <string>
+
+#ifndef ParameterMap_
+#define ParameterMap_
 
 namespace SCC
 {
 
-class ParameterMap : public  std::map<string, SCC::DataType>
+class ParameterMap : public  std::map<std::string, SCC::DataType>
 {
 	public:
 
@@ -75,11 +76,11 @@ class ParameterMap : public  std::map<string, SCC::DataType>
 	}
     }
 
-	friend ostream& operator<<(ostream& outStream, const SCC::ParameterMap& P)
+	friend std::ostream& operator<<(std::ostream& outStream, const SCC::ParameterMap& P)
 	{
 	for(auto it = P.cbegin(); it != P.cend(); ++it)
 	{
-	   outStream <<  it->first <<  "  "  << it->second << endl;
+	   outStream <<  it->first <<  "  "  << it->second << std::endl;
 	}
 	return outStream;
 	}

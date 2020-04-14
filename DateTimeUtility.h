@@ -60,8 +60,6 @@ std::uint64_t getTimeHash()
     return (std::uint64_t)timeHash;
 }
 std::hash<std::string> str_hash;
-
-
 };
 
 

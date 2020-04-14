@@ -31,16 +31,18 @@
 #
 #############################################################################
 */
-
-
-#ifndef _SCC_XMLutilty_
-#define _SCC_XMLutilty_
-
 #include "XML_ParameterList/XML_ParameterListArray.h"
 
 #include "GridFunctionNd/SCC_GridFunction1d.h"
 #include "GridFunctionNd/SCC_GridFunction2d.h"
 #include "GridFunctionNd/SCC_GridFunction3d.h"
+
+#include <string>
+
+#ifndef _SCC_XMLutilty_
+#define _SCC_XMLutilty_
+
+
 
 namespace SCC
 {
@@ -58,7 +60,7 @@ void XMLinitialize(XML_ParameterListArray& paramList, GridFunction1d& G)
 
 		    if(paramList.isParameterList("ComputationalDomain") == 0)
 		    {
-		    string mesg = "\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n";
+		    std::string mesg = "\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n";
 		    mesg       += "Error initializing GridFunction1d class \n";
 		    mesg       += "ComputationalDomain parameter list was not found \n";
 		    mesg       += "in input XML_ParameterListArray \n";
@@ -68,7 +70,7 @@ void XMLinitialize(XML_ParameterListArray& paramList, GridFunction1d& G)
 
 		    if(paramList.isParameterList("GridParameters") == 0)
 		    {
-		    string mesg = "\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n";
+		    std::string mesg = "\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n";
 		    mesg       += "Error initializing GridFunction1d class \n";
 		    mesg       += "GridParameters parameter list was not found \n";
 		    mesg       += "in input XML_ParameterListArray \n";
@@ -89,7 +91,7 @@ void XMLinitialize(XML_ParameterListArray& paramList, GridFunction2d& G)
 
 	    if(paramList.isParameterList("ComputationalDomain") == 0)
 	    {
-	    string mesg = "\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n";
+	    std::string mesg = "\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n";
 	    mesg       += "Error initializing GridFunction2d class \n";
 	    mesg       += "ComputationalDomain parameter list was not found \n";
 	    mesg       += "in input XML_ParameterListArray \n";
@@ -99,7 +101,7 @@ void XMLinitialize(XML_ParameterListArray& paramList, GridFunction2d& G)
 
 	    if(paramList.isParameterList("GridParameters") == 0)
 	    {
-	    string mesg = "\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n";
+	    std::string mesg = "\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n";
 	    mesg       += "Error initializing GridFunction2d class \n";
 	    mesg       += "GridParameters parameter list was not found \n";
 	    mesg       += "in input XML_ParameterListArray \n";
@@ -124,7 +126,7 @@ void XMLinitialize(XML_ParameterListArray& paramList, GridFunction3d& G)
 
     if(paramList.isParameterList("ComputationalDomain") == 0)
     {
-    string mesg = "\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n";
+    std::string mesg = "\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n";
     mesg       += "Error initializing GridFunction3d class \n";
     mesg       += "ComputationalDomain parameter list was not found \n";
     mesg       += "in input XML_ParameterListArray \n";
@@ -134,7 +136,7 @@ void XMLinitialize(XML_ParameterListArray& paramList, GridFunction3d& G)
 
     if(paramList.isParameterList("GridParameters") == 0)
     {
-    string mesg = "\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n";
+    std::string mesg = "\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n";
     mesg       += "Error initializing GridFunction3d class \n";
     mesg       += "GridParameters parameter list was not found \n";
     mesg       += "in input XML_ParameterListArray \n";
