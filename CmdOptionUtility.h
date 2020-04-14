@@ -1,8 +1,8 @@
-#ifndef _CmdOptionUtility_
-#define _CmdOptionUtility_
+#ifndef CmdOptionUtility_
+#define CmdOptionUtility_
+#include <stdexcept>
 #include <algorithm>
 #include <string>
-#include <cstdio>
 //
 // CmdOptionUtility is a "minimal" self-contained
 // class to assist in parsing command line options
@@ -36,10 +36,11 @@
 // ... if inputOption.size() > 0 process option
 // }
 //
-// exit(1) is called if an option with no argument is supplied with one,
+// A std::invalid_argument exception is thrown if an option with no argument is supplied with one,
 // or if an option that requires an argument isn't supplied with one.
 //
 // Chris Anderson Sept. 17, 2012
+// Updated 4/13/2020
 //
 /*
 #############################################################################
@@ -85,12 +86,15 @@ class CmdOptionUtility
         }
     }
 
+
+    std::string errorString;
     if(errorFlag)
     {
-	printf("XXXXXXXXXXXXXX   Error  XXXXXXXXXXXXXXXXXXX\n");
-	printf("Command line option %s requires an argument \n",option.c_str());
-	printf("XXXXXXX     Program Terminated    XXXXXXXX\n");
-	exit(1);
+    errorString   =  (std::string)"\nXXXXXXXXXXXXXX   Error  XXXXXXXXXXXXXXXXXXX\n" +
+                     (std::string)"Command line option " + option +
+                     (std::string)" requires an argument\n" +
+                     (std::string)"XXXXXXX     Program Terminated    XXXXXXXX\n";
+    throw std::invalid_argument(errorString);
     }
     return optionValue;
     }
@@ -104,6 +108,7 @@ class CmdOptionUtility
 
     bool isNoArgCmdOption(int argc, char* argv[], const std::string& option)
     {
+    std::string errorString;
     char**  end = argc + argv;
     char ** itr = std::find(argv, end, option);
     if(itr != end)
@@ -112,10 +117,11 @@ class CmdOptionUtility
     {
      if(*(itr)[0] != '-')
      {
-        printf("XXXXXXXXXXXXXX   Error  XXXXXXXXXXXXXXXXXXX\n");
-        printf("Command line option %s requires NO argument \n",option.c_str());
-        printf("XXXXXXX     Program Terminated    XXXXXXXX\n");
-        exit(1);
+        errorString   =   (std::string)"\nXXXXXXXXXXXXXX   Error  XXXXXXXXXXXXXXXXXXX\n" +
+                          (std::string)"Command line option " + option +
+                          (std::string)" requires NO argument\n" +
+                          (std::string)"XXXXXXX     Program Terminated    XXXXXXXX\n";
+        throw std::invalid_argument(errorString);
      }
      else
      {
