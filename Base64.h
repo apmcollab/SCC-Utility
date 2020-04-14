@@ -5,8 +5,8 @@
  *  Author    : anderson
  */
 
-#ifndef _Base64_
-#define _Base64_
+#ifndef Base64_
+#define Base64_
 
 //
 // Class Base64: A class for conversion to and from Base64 character encoding.
