@@ -136,8 +136,8 @@ std::string getBasePath(const std::string& fileName)
 	const char *symlinkpath = fileName.c_str();
 	char *actualpath;
     char pathBuffer[_LOCAL_PATH_MAX];
-	string actualPath;
-	string   basePath;
+	std::string actualPath;
+	std::string   basePath;
 	#ifndef _MSC_VER
     actualpath =   realpath(symlinkpath, pathBuffer);
     #else
