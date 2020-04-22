@@ -65,7 +65,7 @@ void XMLinitialize(XML_ParameterListArray& paramList, GridFunction1d& G)
 		    mesg       += "ComputationalDomain parameter list was not found \n";
 		    mesg       += "in input XML_ParameterListArray \n";
 		    mesg       += "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n";
-		    throw runtime_error(mesg);
+		    throw std::runtime_error(mesg);
 		    }
 
 		    if(paramList.isParameterList("GridParameters") == 0)
@@ -75,7 +75,7 @@ void XMLinitialize(XML_ParameterListArray& paramList, GridFunction1d& G)
 		    mesg       += "GridParameters parameter list was not found \n";
 		    mesg       += "in input XML_ParameterListArray \n";
 		    mesg       += "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n";
-		    throw runtime_error(mesg);
+		    throw std::runtime_error(mesg);
 		    }
 
 		    long xPanelsInput  = paramList.getParameterValue("xPanels","GridParameters");
@@ -96,7 +96,7 @@ void XMLinitialize(XML_ParameterListArray& paramList, GridFunction2d& G)
 	    mesg       += "ComputationalDomain parameter list was not found \n";
 	    mesg       += "in input XML_ParameterListArray \n";
 	    mesg       += "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n";
-	    throw runtime_error(mesg);
+	    throw std::runtime_error(mesg);
 	    }
 
 	    if(paramList.isParameterList("GridParameters") == 0)
@@ -106,7 +106,7 @@ void XMLinitialize(XML_ParameterListArray& paramList, GridFunction2d& G)
 	    mesg       += "GridParameters parameter list was not found \n";
 	    mesg       += "in input XML_ParameterListArray \n";
 	    mesg       += "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n";
-	    throw runtime_error(mesg);
+	    throw std::runtime_error(mesg);
 	    }
 
 	    long xPanelsInput  = paramList.getParameterValue("xPanels","GridParameters");
@@ -131,7 +131,7 @@ void XMLinitialize(XML_ParameterListArray& paramList, GridFunction3d& G)
     mesg       += "ComputationalDomain parameter list was not found \n";
     mesg       += "in input XML_ParameterListArray \n";
     mesg       += "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n";
-    throw runtime_error(mesg);
+    throw std::runtime_error(mesg);
     }
 
     if(paramList.isParameterList("GridParameters") == 0)
@@ -141,7 +141,7 @@ void XMLinitialize(XML_ParameterListArray& paramList, GridFunction3d& G)
     mesg       += "GridParameters parameter list was not found \n";
     mesg       += "in input XML_ParameterListArray \n";
     mesg       += "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n";
-    throw runtime_error(mesg);
+    throw std::runtime_error(mesg);
     }
 
     long xPanelsInput  = paramList.getParameterValue("xPanels","GridParameters");
