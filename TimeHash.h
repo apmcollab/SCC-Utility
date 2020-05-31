@@ -30,8 +30,8 @@
 #include <ctime>
 #include <cstdint>
 
-#ifndef TimeHash_
-#define TimeHash_
+#ifndef TimeHash_H_
+#define TimeHash_H_
 
 class TimeHash
 {

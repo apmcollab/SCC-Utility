@@ -37,8 +37,9 @@ are not implemented for the objects of this class.
 #############################################################################
 */
 
-#ifndef  DataType_
-#define  DataType_
+#ifndef  SCC_DataType_H_
+#define  SCC_DataType_H_
+
 #include <string>
 #include <iostream>
 #include <sstream>

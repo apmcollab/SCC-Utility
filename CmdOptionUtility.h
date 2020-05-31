@@ -1,5 +1,6 @@
-#ifndef CmdOptionUtility_
-#define CmdOptionUtility_
+#ifndef CmdOptionUtility_H
+#define CmdOptionUtility_H
+
 #include <stdexcept>
 #include <algorithm>
 #include <string>

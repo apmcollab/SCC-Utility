@@ -43,8 +43,8 @@
 #include <iostream>
 #include <string>
 
-#ifndef ParameterMap_
-#define ParameterMap_
+#ifndef SCC_ParameterMap_H_
+#define SCC_ParameterMap_H_
 
 namespace SCC
 {

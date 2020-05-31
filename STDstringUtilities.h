@@ -1,5 +1,5 @@
-#ifndef STDstringUtilities_
-#define STDstringUtilities_
+#ifndef STDstringUtilities_H_
+#define STDstringUtilities_H_
 
 #include <sys/stat.h>
 
@@ -32,7 +32,7 @@
 
 #define SPACES " \t\r\n"
 
-#define _LOCAL_PATH_MAX 4096
+#define LOCAL_PATH_MAX 4096
 
 class STDstringUtilities
 {
@@ -135,13 +135,13 @@ std::string getBasePath(const std::string& fileName)
 {
 	const char *symlinkpath = fileName.c_str();
 	char *actualpath;
-    char pathBuffer[_LOCAL_PATH_MAX];
+    char pathBuffer[LOCAL_PATH_MAX];
 	std::string actualPath;
 	std::string   basePath;
 	#ifndef _MSC_VER
     actualpath =   realpath(symlinkpath, pathBuffer);
     #else
-    actualpath =  _fullpath(pathBuffer,symlinkpath,_LOCAL_PATH_MAX);
+    actualpath =  _fullpath(pathBuffer,symlinkpath,LOCAL_PATH_MAX);
     #endif
 
     if (actualpath != NULL)
@@ -157,12 +157,12 @@ std::string getCWD()
 {
 	char *actualpath;
 	std::string actualPath;
-	char   pathBuffer[_LOCAL_PATH_MAX];
+	char   pathBuffer[LOCAL_PATH_MAX];
 
 #ifndef _MSC_VER
 	actualpath = realpath("./", pathBuffer);
 #else
-	actualpath = _fullpath(pathBuffer, "./", _LOCAL_PATH_MAX);
+	actualpath = _fullpath(pathBuffer, "./", LOCAL_PATH_MAX);
 #endif
 
     if (actualpath != NULL)
@@ -179,12 +179,12 @@ std::string getBaseName(std::string& fileName)
 
 	std::string actualPath;
 	std::string   baseName;
-	char   pathBuffer[_LOCAL_PATH_MAX];
+	char   pathBuffer[LOCAL_PATH_MAX];
 
 #ifndef _MSC_VER
 	actualpath = realpath(symlinkpath, pathBuffer);
 #else
-	actualpath = _fullpath(pathBuffer, symlinkpath, _LOCAL_PATH_MAX);
+	actualpath = _fullpath(pathBuffer, symlinkpath, LOCAL_PATH_MAX);
 #endif
     if (actualpath != NULL)
     {
@@ -209,6 +209,6 @@ bool fileExists(const std::string fileName)
 
 };
 
-#undef _LOCAL_PATH_MAX
+#undef LOCAL_PATH_MAX
 #undef SPACES
 #endif

@@ -39,10 +39,8 @@
 
 #include <string>
 
-#ifndef _SCC_XMLutilty_
-#define _SCC_XMLutilty_
-
-
+#ifndef SCC_XMLutilty_H_
+#define SCC_XMLutilty_H_
 
 namespace SCC
 {
@@ -163,4 +161,4 @@ void XMLinitialize(XML_ParameterListArray& paramList, GridFunction3d& G)
 } // SCC namespace
 
 
-#endif /* _SCC_XMLutilty_ */
+#endif /* SCC_XMLutilty_ */

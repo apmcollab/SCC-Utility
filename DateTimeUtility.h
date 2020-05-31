@@ -26,8 +26,8 @@
 #############################################################################
 */
 
-#ifndef DateTimeUtility_
-#define DateTimeUtility_
+#ifndef DateTimeUtility_H_
+#define DateTimeUtility_H_
 
 #include <string>
 #include <ctime>

@@ -30,8 +30,8 @@
 #include <sys/stat.h>
 #include <string>
 
-#ifndef SCC_UTILITY_IOUTILITY_H_
-#define SCC_UTILITY_IOUTILITY_H_
+#ifndef IOutility_H_
+#define IOutility_H_
 
 class IOutility
 {
@@ -48,4 +48,4 @@ inline bool isFile(const std::string& name)
 
 
 
-#endif /* SCC_UTILITY_IOUTILITY_H_ */
+#endif
