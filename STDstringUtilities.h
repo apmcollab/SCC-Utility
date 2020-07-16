@@ -85,13 +85,13 @@ void replaceAllSubstring(std::string& str,const std::string& str1,const std::str
 void toUpper(std::string& str)
 {
 	std::transform(str.begin(), str.end(), str.begin(),[](unsigned char c)
-	{return std::toupper(c); });
+    {return  static_cast<char>(std::toupper(c)); });
 }
 
 void toLower(std::string& str)
 {
 	std::transform(str.begin(), str.end(), str.begin(),[](unsigned char c)
-	{return std::tolower(c); });
+	{return  static_cast<char>(std::tolower(c)); });
 }
 
 

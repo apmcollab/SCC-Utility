@@ -3,7 +3,9 @@ A collection of miscellaneous class and functions useful for tasks that arise in
 ### Prerequisites
 C++11
 ### Versioning
-Release : 1.0.4
+Release : 1.0.5
+### Date 
+July 16, 2020
 ### Authors
 Chris Anderson
 ### License
