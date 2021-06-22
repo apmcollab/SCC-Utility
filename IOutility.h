@@ -26,8 +26,11 @@
 #############################################################################
 */
 
-
+#ifndef _MSC_VER
 #include <sys/stat.h>
+#endif
+
+#include <fstream>
 #include <string>
 
 #ifndef IOutility_H_
@@ -35,17 +38,39 @@
 
 class IOutility
 {
-
 public:
 
+#ifndef _MSC_VER
 inline bool isFile(const std::string& name)
 {
   struct stat buffer;
   return (stat (name.c_str(), &buffer) == 0);
 }
+#else
+inline bool isFile(const std::string& name)
+{
+    std::ifstream f(name.c_str());
+    return f.good();
+}
+#endif
+
+#ifndef _MSC_VER
+inline bool isFile(const std::string& directory, const std::string& name)
+{
+   std::string fileName = directory + "/" + name;
+  struct stat buffer;
+  return (stat (fileName.c_str(), &buffer) == 0);
+}
+#else
+inline bool isFile(const std::string& directory, const std::string& name)
+{
+	std::string fileName = directory + "\\" + name;
+    std::ifstream f(fileName.c_str());
+    return f.good();
+}
+#endif
+
 
 };
-
-
 
 #endif
