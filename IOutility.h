@@ -55,22 +55,69 @@ inline bool isFile(const std::string& name)
 #endif
 
 #ifndef _MSC_VER
-inline bool isFile(const std::string& directory, const std::string& name)
+inline bool isFile(const std::string& dirName, const std::string& name)
 {
-   std::string fileName = directory + "/" + name;
+  std::string fileName = dirName + "/" + name;
   struct stat buffer;
   return (stat (fileName.c_str(), &buffer) == 0);
 }
 #else
-inline bool isFile(const std::string& directory, const std::string& name)
+inline bool isFile(const std::string& dirName, const std::string& name)
 {
-	std::string fileName = directory + "\\" + name;
+	std::string fileName = dirName + "\\" + name;
     std::ifstream f(fileName.c_str());
     return f.good();
 }
 #endif
 
 
-};
+// Returns true if an error is found in opening the file and appends
+// to the error message
 
+
+bool checkFileSpecifiedError(const std::string& name, const std::string& routineName, std::string& errMsg)
+{
+	if(isFile(name)){return false;}
+	errMsg.append("\nXXXXX ");
+	errMsg.append(routineName  + " specified file not found \n");
+    errMsg.append("File name : ");
+	errMsg.append(name);
+	errMsg.append("\n");
+	return true;
+}
+
+// Returns true if an error is found in opening the file and appends
+// to the error message
+#ifndef _MSC_VER
+bool checkFileSpecifiedError(const std::string& dirName, const std::string& name, const std::string& routineName, std::string& errMsg)
+{
+	std::string fileName = dirName + "/" + name;
+	if(isFile(fileName)){return false;}
+    errMsg.append("\nXXXXX ");
+	errMsg.append(routineName  + " specified file not found \n");
+    errMsg.append("Directory name : ");
+	errMsg.append(dirName);
+	errMsg.append("\n");
+	errMsg.append("File name      : ");
+	errMsg.append(name);
+	errMsg.append("\n");
+	return true;
+}
+#else
+bool checkFileSpecifiedError(const std::string& dirName, const std::string& name, const std::string& routineName, std::string& errMsg)
+{
+	std::string fileName = dirName + "\\" + name;
+	if(isFile(fileName)){return false;}
+    errMsg.append("\nXXXXX ");
+	errMsg.append(routineName  + " specified file not found \n");
+    errMsg.append("Directory name : ");
+	errMsg.append(dirName);
+	errMsg.append("\n");
+	errMsg.append("File name : ");
+	errMsg.append(name);
+	errMsg.append("\n");
+	return true;
+}
+#endif
+};
 #endif
