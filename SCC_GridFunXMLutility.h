@@ -32,6 +32,7 @@
 #############################################################################
 */
 #include "XML_ParameterList/XML_ParameterListArray.h"
+#include "XML_ParameterList/XML_ParameterCheck.h"
 
 #include "GridFunctionNd/SCC_GridFunction1d.h"
 #include "GridFunctionNd/SCC_GridFunction2d.h"
@@ -155,7 +156,6 @@ void XMLinitialize(XML_ParameterListArray& paramList, GridFunction2d& G)
 
 void XMLinitialize(XML_ParameterListArray& paramList, GridFunction3d& G)
 {
-
     if(paramList.isParameterList("ComputationalDomain") == 0)
     {
     std::string mesg = "\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n";
@@ -226,6 +226,76 @@ void XMLinitialize(XML_ParameterListArray& paramList, GridFunction3d& G)
 
     G.initialize(xPanels, xMin, xMax, yPanels, yMin, yMax, zPanels, zMin, zMax);
 }
+
+   bool checkParametersError(const XML_ParameterListArray& paramList, int dimension, std::string& errMsg)
+   {
+	XML_ParameterCheck xmlCheck;
+	bool errorFlag      = false;
+
+	std::string routineName = "SCC::GridFunXMLutility";
+
+	errorFlag = xmlCheck.checkParameterError(routineName, paramList, "ComputationalDomain",errMsg)  || errorFlag;
+	errorFlag = xmlCheck.checkParameterError(routineName, paramList, "GridParameters",errMsg)       || errorFlag;
+
+    errorFlag = xmlCheck.checkParameterError(routineName, paramList, "xMin","ComputationalDomain", errMsg) || errorFlag;
+    errorFlag = xmlCheck.checkParameterError(routineName, paramList, "xMax","ComputationalDomain", errMsg) || errorFlag;
+    if((not paramList.isParameter("xPanelDensity",  "GridParameters")) &&
+       (not paramList.isParameter("xPanels",  "GridParameters")))
+    {
+        errMsg.append("\nXXXXX ");
+	    errMsg.append(routineName  + " Parameter Error \n");
+		errMsg.append("Parameter missing : ");
+		errMsg.append("xPanelDensity or xPanels");
+	    errMsg.append("\n");
+		errMsg.append("Parameter list    : ");
+		errMsg.append("GridParameters");
+		errMsg.append("\n");
+		errorFlag = true;
+    }
+
+
+    if(dimension >= 2)
+    {
+    errorFlag = xmlCheck.checkParameterError(routineName, paramList, "yMin","ComputationalDomain", errMsg) || errorFlag;
+    errorFlag = xmlCheck.checkParameterError(routineName, paramList, "yMax","ComputationalDomain", errMsg) || errorFlag;
+    if((not paramList.isParameter("yPanelDensity",  "GridParameters")) &&
+       (not paramList.isParameter("yPanels",  "GridParameters")))
+    {
+        errMsg.append("\nXXXXX ");
+	    errMsg.append(routineName  + " Parameter Error \n");
+		errMsg.append("Parameter missing : ");
+		errMsg.append("yPanelDensity or yPanels");
+	    errMsg.append("\n");
+		errMsg.append("Parameter list    : ");
+		errMsg.append("GridParameters");
+		errMsg.append("\n");
+		errorFlag = true;
+    }
+
+    }
+
+    if(dimension >= 3)
+    {
+    errorFlag = xmlCheck.checkParameterError(routineName, paramList, "zMin","ComputationalDomain", errMsg) || errorFlag;
+    errorFlag = xmlCheck.checkParameterError(routineName, paramList, "zMax","ComputationalDomain", errMsg) || errorFlag;
+    if((not paramList.isParameter("zPanelDensity",  "GridParameters")) &&
+       (not paramList.isParameter("zPanels",  "GridParameters")))
+    {
+        errMsg.append("\nXXXXX ");
+	    errMsg.append(routineName  + " Parameter Error \n");
+		errMsg.append("Parameter missing : ");
+		errMsg.append("zPanelDensity or zPanels");
+	    errMsg.append("\n");
+		errMsg.append("Parameter list    : ");
+		errMsg.append("GridParameters");
+		errMsg.append("\n");
+		errorFlag = true;
+    }
+    }
+
+    return errorFlag;
+
+   }
 
 };
 
