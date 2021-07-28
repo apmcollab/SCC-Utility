@@ -53,7 +53,7 @@ public:
 
 GridFunXMLutility(){};
 
-void XMLinitialize(XML_ParameterListArray& paramList, GridFunction1d& G)
+void XMLinitialize(const XML_ParameterListArray& paramList, GridFunction1d& G)
 {
     if(paramList.isParameterList("ComputationalDomain") == 0)
     {
@@ -95,7 +95,7 @@ void XMLinitialize(XML_ParameterListArray& paramList, GridFunction1d& G)
     G.initialize(xPanels, xMin, xMax);
 }
 
-void XMLinitialize(XML_ParameterListArray& paramList, GridFunction2d& G)
+void XMLinitialize(const XML_ParameterListArray& paramList, GridFunction2d& G)
 {
     if(paramList.isParameterList("ComputationalDomain") == 0)
     {
@@ -154,7 +154,7 @@ void XMLinitialize(XML_ParameterListArray& paramList, GridFunction2d& G)
 }
 
 
-void XMLinitialize(XML_ParameterListArray& paramList, GridFunction3d& G)
+void XMLinitialize(const XML_ParameterListArray& paramList, GridFunction3d& G)
 {
     if(paramList.isParameterList("ComputationalDomain") == 0)
     {
