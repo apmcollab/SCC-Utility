@@ -27,6 +27,7 @@
 #include <string>
 
 #ifndef GIT_VERSION_INFO_
+
 #ifndef GIT_REV_COUNT_
 #define GIT_REV_COUNT_ 0
 #endif
@@ -37,6 +38,17 @@
 #define GIT_DATE_ " NONE"
 #endif
 
+#ifndef BLAS_TYPE_
+#define BLAS_TYPE_ "NONE"
+#endif
+
+#ifndef FFTW_TYPE_
+#define FFTW_TYPE_ "NONE"
+#endif
+
+#ifndef OPENBLAS_THREADED
+#define OPENBLAS_THREADED 0
+#endif
 
 class GitVersionInfo
 {
@@ -47,6 +59,8 @@ public:
 		buildVersion = (long)GIT_REV_COUNT_;
 		buildDate    = std::string(GIT_DATE_).substr(1,20);
 		buildID      = std::string(GIT_HASH_).substr(0,7);
+		blasType     = BLAS_TYPE_;
+		fftwType     = FFTW_TYPE_;
 	}
 
 	GitVersionInfo(const GitVersionInfo& G)
@@ -54,6 +68,8 @@ public:
 		buildVersion = G.buildVersion;
 		buildDate    = G.buildDate;
 		buildID      = G.buildID;
+		blasType     = G.blasType;
+		fftwType     = G.fftwType;
 	}
 
 	std::string getVersionMsg()
@@ -62,6 +78,22 @@ public:
 		versionMsg  = versionMsg + std::to_string(buildVersion) + "\n";
 	    versionMsg  = versionMsg +  "############# Build_Date  : " + buildDate + "\n";
         versionMsg  = versionMsg +  "############# Build_ID    : " + buildID + "\n";
+        if(blasType.compare("NONE"))
+        {
+        if(OPENBLAS_THREADED)
+        {
+        versionMsg  = versionMsg +  "############# BLAS_type   : OPENBLAS_THREADED \n";
+        }
+        else
+        {
+        versionMsg  = versionMsg +  "############# BLAS_type   : " + blasType + "\n";
+        }}
+
+        if(fftwType.compare("NONE"))
+        {
+        versionMsg  = versionMsg +  "############# FFTW_type   : " + fftwType + "\n";
+        }
+
         return versionMsg;
 	}
 
@@ -82,7 +114,17 @@ public:
 	long     buildVersion;
     std::string buildDate;
 	std::string   buildID;
+
+	std::string   blasType;
+	std::string   fftwType;
 };
+
+#undef GIT_REV_COUNT_
+#undef GIT_HASH_
+#undef GIT_DATE_
+#undef BLAS_TYPE_
+#undef FFTW_TYPE_
+#undef OPENBLAS_THREADED
 
 // The CMakelists.txt entries that pack the defines used by the GitVersionInfo
 // class are
