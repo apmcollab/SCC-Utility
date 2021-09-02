@@ -56,7 +56,7 @@ public:
 
 	GitVersionInfo()
 	{
-		buildVersion = (long)GIT_REV_COUNT_;
+		//buildVersion = (long)GIT_REV_COUNT_;
 		buildDate    = std::string(GIT_DATE_).substr(1,20);
 		buildID      = std::string(GIT_HASH_).substr(0,7);
 		blasType     = BLAS_TYPE_;
@@ -65,7 +65,7 @@ public:
 
 	GitVersionInfo(const GitVersionInfo& G)
 	{
-		buildVersion = G.buildVersion;
+		//buildVersion = G.buildVersion;
 		buildDate    = G.buildDate;
 		buildID      = G.buildID;
 		blasType     = G.blasType;
@@ -74,9 +74,9 @@ public:
 
 	std::string getVersionMsg()
 	{
-		std::string versionMsg = "############# Build       : ";
-		versionMsg  = versionMsg + std::to_string(buildVersion) + "\n";
-	    versionMsg  = versionMsg +  "############# Build_Date  : " + buildDate + "\n";
+		//std::string versionMsg = "############# Build       : ";
+		//versionMsg  = versionMsg + std::to_string(buildVersion) + "\n";
+	    std::string versionMsg   =  "############# Build_Date  : " + buildDate + "\n";
         versionMsg  = versionMsg +  "############# Build_ID    : " + buildID + "\n";
         if(blasType.compare("NONE"))
         {
@@ -97,10 +97,10 @@ public:
         return versionMsg;
 	}
 
-	long getBuildVersion() const
-	{
-		return buildVersion;
-	}
+	//long getBuildVersion() const
+	//{
+	//	return buildVersion;
+	//}
 
 	std::string getBuildDate() const
 	{
@@ -111,7 +111,7 @@ public:
 	{
 		return buildID;
 	}
-	long     buildVersion;
+	//long     buildVersion;
     std::string buildDate;
 	std::string   buildID;
 
