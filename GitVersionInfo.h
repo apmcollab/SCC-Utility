@@ -46,8 +46,10 @@
 #define FFTW_TYPE_ "NONE"
 #endif
 
-#ifndef OPENBLAS_THREADED
-#define OPENBLAS_THREADED 0
+#ifndef THREADED_
+#define THREADED_ false
+#else
+#define THREADED_ true
 #endif
 
 class GitVersionInfo
@@ -80,7 +82,7 @@ public:
         versionMsg  = versionMsg +  "############# Build_ID    : " + buildID + "\n";
         if(blasType.compare("NONE"))
         {
-        if(OPENBLAS_THREADED)
+        if(THREADED_)
         {
         versionMsg  = versionMsg +  "############# BLAS_type   : OPENBLAS_THREADED \n";
         }
@@ -124,7 +126,7 @@ public:
 #undef GIT_DATE_
 #undef BLAS_TYPE_
 #undef FFTW_TYPE_
-#undef OPENBLAS_THREADED
+#undef THREADED_
 
 // The CMakelists.txt entries that pack the defines used by the GitVersionInfo
 // class are
