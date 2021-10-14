@@ -46,7 +46,7 @@
 #define FFTW_TYPE_ "NONE"
 #endif
 
-#ifndef THREADED_
+#ifndef OPENBLAS_THREADED
 #define THREADED_ false
 #else
 #define THREADED_ true
