@@ -32,10 +32,10 @@
 #define GIT_REV_COUNT_ 0
 #endif
 #ifndef GIT_HASH_
-#define GIT_HASH_ "NONE   "
+#define GIT_HASH_ "NONE"
 #endif
 #ifndef GIT_DATE_
-#define GIT_DATE_ " NONE"
+#define GIT_DATE_ "NONE"
 #endif
 
 #ifndef BLAS_TYPE_
@@ -78,8 +78,17 @@ public:
 	{
 		//std::string versionMsg = "############# Build       : ";
 		//versionMsg  = versionMsg + std::to_string(buildVersion) + "\n";
-	    std::string versionMsg   =  "############# Build_Date  : " + buildDate + "\n";
+		std::string versionMsg = "\n";
+
+		if(!(buildDate.compare("NONE") ==0))
+        {
+	    versionMsg   +=  "############# Build_Date  : " + buildDate + "\n";
+        }
+		if(!(buildID.compare("NONE") ==0))
+        {
         versionMsg  = versionMsg +  "############# Build_ID    : " + buildID + "\n";
+        }
+
         if(blasType.compare("NONE"))
         {
         if(THREADED_)
