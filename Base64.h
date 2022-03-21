@@ -100,6 +100,20 @@ std::vector<long> decodeLong(const std::string& encodedData)
 	return data;
 }
 
+std::string encodeSingleLong(const long& longData)
+{
+    return encode((const BYTE*)&longData, (unsigned int)(sizeof(long)));
+}
+
+long decodeSingleLong(const std::string& encodedData)
+{
+	std::vector<BYTE>   dataDecoded = decode(encodedData);
+	long                data;
+	std::memcpy(&data,&dataDecoded[0],dataDecoded.size());
+	return data;
+}
+
+
 std::string encodeSingleFloat(const float& floatData)
 {
     return encode((const BYTE*)&floatData, (unsigned int)(sizeof(float)));
@@ -133,6 +147,12 @@ std::string encodeFloat(const std::vector<float>& floatData)
     return encode((const BYTE*)&floatData[0], (unsigned int)(floatData.size()*sizeof(float)));
 }
 
+std::string encodeFloat(size_t dataSize, const float* floatData)
+{
+	if (dataSize == 0) return "";
+    return encode((const BYTE*)&floatData[0],(unsigned int)(dataSize*sizeof(float)));
+}
+
 std::vector<float> decodeFloat(const std::string& encodedData)
 {
 	std::vector<BYTE>   dataDecoded = decode(encodedData);
@@ -145,6 +165,12 @@ std::string encodeDouble(const std::vector<double>& doubleData)
 {
 	if (doubleData.empty()) return "";
     return encode((const BYTE*)&doubleData[0], (unsigned int)(doubleData.size()*sizeof(double)));
+}
+
+std::string encodeDouble(size_t dataSize, const double* doubleData)
+{
+	if (dataSize == 0) return "";
+    return encode((const BYTE*)&doubleData[0],(unsigned int)(dataSize*sizeof(double)));
 }
 
 std::vector<double> decodeDouble(const std::string& encodedData)
