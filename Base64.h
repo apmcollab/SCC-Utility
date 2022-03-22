@@ -181,6 +181,13 @@ std::vector<double> decodeDouble(const std::string& encodedData)
 	return data;
 }
 
+void decodeDouble(const std::string& encodedData, size_t dataSize, double* doubleData)
+{
+	std::vector<BYTE>   dataDecoded = decode(encodedData);
+	std::vector<double> data(dataDecoded.size()/sizeof(double));
+	std::memcpy(&doubleData[0],&dataDecoded[0],(unsigned int)(dataSize*sizeof(double)));
+}
+
 std::string encode(const std::vector<BYTE>& buf)
 {
     if (buf.empty())
