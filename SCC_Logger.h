@@ -116,6 +116,22 @@ class Logger
     fflush(LogFout);
     }
 
+    std::string getDateAndTimeString()
+    {
+    struct tm when;
+    time_t now; time(&now);
+    when = *localtime( &now );
+
+    //Www Mmm dd hh:mm:ss yyyy
+    std::string dateString(asctime( &when ));
+
+    std::vector<std::string> dateTokens;
+    sUtilities.Tokenize(dateString,dateTokens," \n\r\0");
+
+    std::string dateAndTimeString;
+    dateAndTimeString = ":  "+dateTokens[3]+"  : "+dateTokens[0]+" "+dateTokens[1]+" "+dateTokens[2]+" "+dateTokens[4];
+    return dateAndTimeString;
+    }
 
     void programHaltMessage()
     {
