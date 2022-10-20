@@ -26,12 +26,18 @@
 #############################################################################
 */
 
-#ifndef _MSC_VER
-#include <sys/stat.h>
-#endif
 
 #include <fstream>
 #include <string>
+
+
+#if __cplusplus > 301402L
+#include <filesystem>
+#define CPP_FILESYSTEM
+#else
+#include <sys/stat.h>
+#undef CPP_FILESYSTEM
+#endif
 
 #ifndef IOutility_H_
 #define IOutility_H_
@@ -40,29 +46,61 @@ class IOutility
 {
 public:
 
-#ifndef _MSC_VER
-inline bool isFile(const std::string& name)
+#ifdef CPP_FILESYSTEM
+static inline bool isFile(const std::string& name)
+{
+return std::filesystem::exists(name);
+}
+#elif _MSC_VER
+static inline bool isFile(const std::string& name)
 {
   struct stat buffer;
   return (stat (name.c_str(), &buffer) == 0);
 }
 #else
-inline bool isFile(const std::string& name)
+static inline bool isFile(const std::string& name)
 {
     std::ifstream f(name.c_str());
     return f.good();
 }
 #endif
 
+#ifdef CPP_FILESYSTEM
+static inline bool createDirectory(const std::string& name)
+{
+	std::filesystem::path newDir(name);
+    if(not std::filesystem::create_directory(newDir))
+    {
+    	return false;
+    }
+    //
+    // set the permissions to 0755
+    //
+    std::filesystem::permissions(name, std::filesystem::perms::others_write | std::filesystem::perms::group_write,
+    	                               std::filesystem::perm_options::remove);
+    return true;
+}
+#else
+static inline bool createDirectory(const std::string& name, mode_t mode = 0755)
+{
+	std::cout << "ZZZZZZZZZZZ Creating directories " << name << std::endl;
+
+	return mkdir(name.c_str(),mode);
+}
+#endif
+
+
+
+
 #ifndef _MSC_VER
-inline bool isFile(const std::string& dirName, const std::string& name)
+static inline bool isFile(const std::string& dirName, const std::string& name)
 {
   std::string fileName = dirName + "/" + name;
   struct stat buffer;
   return (stat (fileName.c_str(), &buffer) == 0);
 }
 #else
-inline bool isFile(const std::string& dirName, const std::string& name)
+static inline bool isFile(const std::string& dirName, const std::string& name)
 {
 	std::string fileName = dirName + "\\" + name;
     std::ifstream f(fileName.c_str());
@@ -70,12 +108,11 @@ inline bool isFile(const std::string& dirName, const std::string& name)
 }
 #endif
 
-
 // Returns true if an error is found in opening the file and appends
 // to the error message
 
 
-bool checkFileSpecifiedError(const std::string& name, const std::string& routineName, std::string& errMsg)
+static bool checkFileSpecifiedError(const std::string& name, const std::string& routineName, std::string& errMsg)
 {
 	if(isFile(name)){return false;}
 	errMsg.append("\nXXXXX ");
@@ -89,7 +126,7 @@ bool checkFileSpecifiedError(const std::string& name, const std::string& routine
 // Returns true if an error is found in opening the file and appends
 // to the error message
 #ifndef _MSC_VER
-bool checkFileSpecifiedError(const std::string& dirName, const std::string& name, const std::string& routineName, std::string& errMsg)
+static bool checkFileSpecifiedError(const std::string& dirName, const std::string& name, const std::string& routineName, std::string& errMsg)
 {
 	std::string fileName = dirName + "/" + name;
 	if(isFile(fileName)){return false;}
@@ -104,7 +141,7 @@ bool checkFileSpecifiedError(const std::string& dirName, const std::string& name
 	return true;
 }
 #else
-bool checkFileSpecifiedError(const std::string& dirName, const std::string& name, const std::string& routineName, std::string& errMsg)
+static bool checkFileSpecifiedError(const std::string& dirName, const std::string& name, const std::string& routineName, std::string& errMsg)
 {
 	std::string fileName = dirName + "\\" + name;
 	if(isFile(fileName)){return false;}
