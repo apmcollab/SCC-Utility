@@ -83,8 +83,6 @@ static inline bool createDirectory(const std::string& name)
 #else
 static inline bool createDirectory(const std::string& name, mode_t mode = 0755)
 {
-	std::cout << "ZZZZZZZZZZZ Creating directories " << name << std::endl;
-
 	return mkdir(name.c_str(),mode);
 }
 #endif
