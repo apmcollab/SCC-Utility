@@ -88,11 +88,27 @@ void toUpper(std::string& str)
     {return  static_cast<char>(std::toupper(c)); });
 }
 
+
+bool isUpperEqual(std::string str, const std::string& upperStr)
+{
+	std::transform(str.begin(), str.end(), str.begin(),[](unsigned char c)
+    {return  static_cast<char>(std::toupper(c)); });
+	return (str == upperStr);
+}
+
 void toLower(std::string& str)
 {
 	std::transform(str.begin(), str.end(), str.begin(),[](unsigned char c)
 	{return  static_cast<char>(std::tolower(c)); });
 }
+
+bool isLowerEqual(std::string str, const std::string& lowerStr)
+{
+	std::transform(str.begin(), str.end(), str.begin(),[](unsigned char c)
+    {return  static_cast<char>(std::tolower(c)); });
+	return (str == lowerStr);
+}
+
 
 
 std::string getBaseFilename(const std::string& filename)
