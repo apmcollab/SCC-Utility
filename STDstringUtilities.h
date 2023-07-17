@@ -88,11 +88,18 @@ void toUpper(std::string& str)
     {return  static_cast<char>(std::toupper(c)); });
 }
 
-
-bool isUpperEqual(std::string str, const std::string& upperStr)
+//
+// Converts copies of both arguments to upper and then compares
+//
+bool isUpperEqual(std::string str, std::string upperStr)
 {
 	std::transform(str.begin(), str.end(), str.begin(),[](unsigned char c)
     {return  static_cast<char>(std::toupper(c)); });
+
+
+    std::transform(upperStr.begin(), upperStr.end(), upperStr.begin(),[](unsigned char c)
+    {return  static_cast<char>(std::toupper(c)); });
+
 	return (str == upperStr);
 }
 
@@ -102,10 +109,18 @@ void toLower(std::string& str)
 	{return  static_cast<char>(std::tolower(c)); });
 }
 
-bool isLowerEqual(std::string str, const std::string& lowerStr)
+//
+// Converts copies of both arguments to lower and then compares
+//
+bool isLowerEqual(std::string str, std::string lowerStr)
 {
 	std::transform(str.begin(), str.end(), str.begin(),[](unsigned char c)
     {return  static_cast<char>(std::tolower(c)); });
+
+    std::transform(lowerStr.begin(), lowerStr.end(), lowerStr.begin(),[](unsigned char c)
+    {return  static_cast<char>(std::tolower(c)); });
+	return (str == lowerStr);
+
 	return (str == lowerStr);
 }
 
