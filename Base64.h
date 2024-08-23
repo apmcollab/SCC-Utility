@@ -74,7 +74,7 @@ const char to_base64[65] =
 std::string encodeInt(const std::vector<int>& intData)
 {
 	if (intData.empty()) return "";
-    return encode((const BYTE*)&intData[0], (unsigned int)(intData.size()*sizeof(int)));
+    return encode((const BYTE*)&intData[0], (size_t)(intData.size()*sizeof(int)));
 }
 
 std::vector<int> decodeInt(const std::string& encodedData)
@@ -89,7 +89,7 @@ std::vector<int> decodeInt(const std::string& encodedData)
 std::string encodeLong(const std::vector<long>& longData)
 {
 	if (longData.empty()) return "";
-    return encode((const BYTE*)&longData[0], (unsigned int)(longData.size()*sizeof(long)));
+    return encode((const BYTE*)&longData[0], (size_t)(longData.size()*sizeof(long)));
 }
 
 std::vector<long> decodeLong(const std::string& encodedData)
@@ -102,7 +102,7 @@ std::vector<long> decodeLong(const std::string& encodedData)
 
 std::string encodeSingleLong(const long& longData)
 {
-    return encode((const BYTE*)&longData, (unsigned int)(sizeof(long)));
+    return encode((const BYTE*)&longData, (size_t)(sizeof(long)));
 }
 
 long decodeSingleLong(const std::string& encodedData)
@@ -116,7 +116,7 @@ long decodeSingleLong(const std::string& encodedData)
 
 std::string encodeSingleFloat(const float& floatData)
 {
-    return encode((const BYTE*)&floatData, (unsigned int)(sizeof(float)));
+    return encode((const BYTE*)&floatData, (size_t)(sizeof(float)));
 }
 
 float decodeSingleFloat(const std::string& encodedData)
@@ -129,7 +129,7 @@ float decodeSingleFloat(const std::string& encodedData)
 
 std::string encodeSingleDouble(const double& doubleData)
 {
-    return encode((const BYTE*)&doubleData, (unsigned int)(sizeof(double)));
+    return encode((const BYTE*)&doubleData, (size_t)(sizeof(double)));
 }
 
 double decodeSingleDouble(const std::string& encodedData)
@@ -144,13 +144,13 @@ double decodeSingleDouble(const std::string& encodedData)
 std::string encodeFloat(const std::vector<float>& floatData)
 {
 	if (floatData.empty()) return "";
-    return encode((const BYTE*)&floatData[0], (unsigned int)(floatData.size()*sizeof(float)));
+    return encode((const BYTE*)&floatData[0], (size_t)(floatData.size()*sizeof(float)));
 }
 
 std::string encodeFloat(size_t dataSize, const float* floatData)
 {
 	if (dataSize == 0) return "";
-    return encode((const BYTE*)&floatData[0],(unsigned int)(dataSize*sizeof(float)));
+    return encode((const BYTE*)&floatData[0],(size_t)(dataSize*sizeof(float)));
 }
 
 std::vector<float> decodeFloat(const std::string& encodedData)
@@ -164,13 +164,13 @@ std::vector<float> decodeFloat(const std::string& encodedData)
 std::string encodeDouble(const std::vector<double>& doubleData)
 {
 	if (doubleData.empty()) return "";
-    return encode((const BYTE*)&doubleData[0], (unsigned int)(doubleData.size()*sizeof(double)));
+    return encode((const BYTE*)&doubleData[0], (size_t)(doubleData.size()*sizeof(double)));
 }
 
 std::string encodeDouble(size_t dataSize, const double* doubleData)
 {
 	if (dataSize == 0) return "";
-    return encode((const BYTE*)&doubleData[0],(unsigned int)(dataSize*sizeof(double)));
+    return encode((const BYTE*)&doubleData[0],(size_t)(dataSize*sizeof(double)));
 }
 
 std::vector<double> decodeDouble(const std::string& encodedData)
@@ -185,17 +185,17 @@ void decodeDouble(const std::string& encodedData, size_t dataSize, double* doubl
 {
 	std::vector<BYTE>   dataDecoded = decode(encodedData);
 	std::vector<double> data(dataDecoded.size()/sizeof(double));
-	std::memcpy(&doubleData[0],&dataDecoded[0],(unsigned int)(dataSize*sizeof(double)));
+	std::memcpy(&doubleData[0],&dataDecoded[0],(size_t)(dataSize*sizeof(double)));
 }
 
 std::string encode(const std::vector<BYTE>& buf)
 {
     if (buf.empty())
         return ""; // Avoid dereferencing buf if it's empty
-    return encode(&buf[0], (unsigned int)buf.size());
+    return encode(&buf[0], (size_t)buf.size());
 }
 
-std::string encode(const BYTE* buf, unsigned int bufLen)
+std::string encode(const BYTE* buf, size_t bufLen)
 {
     // Calculate how many bytes that needs to be added to get a multiple of 3
     size_t missing = 0;
@@ -212,7 +212,7 @@ std::string encode(const BYTE* buf, unsigned int bufLen)
     std::string ret;
     ret.reserve(ret_size);
 
-    for (unsigned int i=0; i<ret_size/4; ++i)
+    for (size_t i=0; i<ret_size/4; ++i)
     {
         // Read a group of three bytes (avoid buffer overrun by replacing with 0)
         size_t index = i*3;
