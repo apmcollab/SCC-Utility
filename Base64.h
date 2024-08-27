@@ -49,6 +49,7 @@
 
 #include <vector>
 #include <string>
+#include <string_view>
 #include <cstring>
 #include <stdexcept>
 typedef unsigned char BYTE;
@@ -192,6 +193,12 @@ void decodeDouble(const std::string& encodedData, size_t dataSize, double* doubl
 {
 	decode(encodedData, dataSize, doubleData);
 }
+
+void decodeDouble(const std::string_view& encodedData, size_t dataSize, double* doubleData)
+{
+	decode(encodedData, dataSize, doubleData);
+}
+
 
 std::string encode(const std::vector<BYTE>& buf)
 {
@@ -382,11 +389,165 @@ void decode(const std::string& encoded_string, size_t dataSize, double* doubleDa
 
 
 // This member function inserts decoded bytes directly into the double values
+// pointed to by doubleDataPtr. This member function requires encoded_string to be
+// a multiple of 4. This will always be the case if the class member function
+// encode(...) is used to encode the data.
+//
+
+
+void decode(const std::string_view& encoded_string, size_t dataSize, double* doubleDataPtr)
+{
+    // Make sure string length is a multiple of 4
+
+	std::string errMsg;
+
+	if((encoded_string.size() % 4) != 0)
+    {
+    	errMsg = "Base64 decode error\nInput string for base64 conversion to double not a multiple of 4\n";
+    	throw std::runtime_error(errMsg);
+	}
+
+    size_t encoded_size = encoded_string.size();
+    unsigned char * ret = reinterpret_cast<unsigned char*>(doubleDataPtr);
+
+    BYTE b4[4];
+    BYTE b3[3];
+
+    size_t dataIndex   = 0;
+    size_t doubleCount = 0;
+    int byteAdd        = 0;
+    int byteCount      = 0;
+    for (size_t i=0; i<encoded_size; i += 4)
+    {
+        // Get values for each group of four base 64 characters
+
+        b4[0] = (encoded_string[i+0] <= 'z') ? from_base64[(int)encoded_string[i+0]] : 0xff;
+        b4[1] = (encoded_string[i+1] <= 'z') ? from_base64[(int)encoded_string[i+1]] : 0xff;
+        b4[2] = (encoded_string[i+2] <= 'z') ? from_base64[(int)encoded_string[i+2]] : 0xff;
+        b4[3] = (encoded_string[i+3] <= 'z') ? from_base64[(int)encoded_string[i+3]] : 0xff;
+
+        // Transform into a group of three bytes
+
+        b3[0] = ((b4[0] & 0x3f) << 2) + ((b4[1] & 0x30) >> 4);
+        b3[1] = ((b4[1] & 0x0f) << 4) + ((b4[2] & 0x3c) >> 2);
+        b3[2] = ((b4[2] & 0x03) << 6) + ((b4[3] & 0x3f) >> 0);
+
+        // Add the byte to output if it isn't part of an '=' character (indicated by 0xff)
+
+        byteAdd = 0;
+        if (b4[1] != 0xff) {ret[dataIndex] = b3[0]; dataIndex += 1; byteAdd += 1;}
+        if (b4[2] != 0xff) {ret[dataIndex] = b3[1]; dataIndex += 1; byteAdd += 1;}
+        if (b4[3] != 0xff) {ret[dataIndex] = b3[2]; dataIndex += 1; byteAdd += 1;}
+
+        byteCount += byteAdd;
+        if(byteCount >= 8)
+        {
+        	doubleCount += 1;
+        	byteCount   -= 8;
+        	    if(doubleCount > dataSize)
+        	    {
+        	    	errMsg  = "Base64 decode error\nDecoded double data count does not match output data size specified.\n";
+        	    	errMsg += "Decoded double data count  : " + std::to_string(doubleCount) + "\n";
+        	    	errMsg += "Output data size specified : " + std::to_string(dataSize) + "\n";
+        	    	throw std::runtime_error(errMsg);
+        	    }
+        }
+
+    }
+
+    if(doubleCount != dataSize)
+    {
+    	errMsg  = "Base64 decode error\nDecoded double data count does not match output data size specified.\n";
+    	errMsg += "Decoded double data count  : " + std::to_string(doubleCount) + "\n";
+    	errMsg += "Output data size specified : " + std::to_string(dataSize) + "\n";
+    	throw std::runtime_error(errMsg);
+    }
+
+}
+
+
+// This member function inserts decoded bytes directly into the double values
 // pointed to by floatDataPtr. This member function requires encoded_string to be
 // a multiple of 4. This will always be the case if the class member function
 // encode(...) is used to encode the data.
 
 void decode(const std::string& encoded_string, size_t dataSize, float* floatDataPtr)
+{
+    // Make sure string length is a multiple of 4
+
+	std::string errMsg;
+
+	if((encoded_string.size() % 4) != 0)
+    {
+    	errMsg = "Base64 decode error\nInput string for base64 conversion to float not a multiple of 4\n";
+    	throw std::runtime_error(errMsg);
+	}
+
+    size_t encoded_size = encoded_string.size();
+    unsigned char * ret = reinterpret_cast<unsigned char*>(floatDataPtr);
+
+    BYTE b4[4];
+    BYTE b3[3];
+
+    size_t dataIndex   = 0;
+    size_t floatCount  = 0;
+    int byteAdd        = 0;
+    int byteCount      = 0;
+    for (size_t i=0; i<encoded_size; i += 4)
+    {
+        // Get values for each group of four base 64 characters
+
+        b4[0] = (encoded_string[i+0] <= 'z') ? from_base64[(int)encoded_string[i+0]] : 0xff;
+        b4[1] = (encoded_string[i+1] <= 'z') ? from_base64[(int)encoded_string[i+1]] : 0xff;
+        b4[2] = (encoded_string[i+2] <= 'z') ? from_base64[(int)encoded_string[i+2]] : 0xff;
+        b4[3] = (encoded_string[i+3] <= 'z') ? from_base64[(int)encoded_string[i+3]] : 0xff;
+
+        // Transform into a group of three bytes
+
+        b3[0] = ((b4[0] & 0x3f) << 2) + ((b4[1] & 0x30) >> 4);
+        b3[1] = ((b4[1] & 0x0f) << 4) + ((b4[2] & 0x3c) >> 2);
+        b3[2] = ((b4[2] & 0x03) << 6) + ((b4[3] & 0x3f) >> 0);
+
+        // Add the byte to output if it isn't part of an '=' character (indicated by 0xff)
+
+        byteAdd = 0;
+        if (b4[1] != 0xff) {ret[dataIndex] = b3[0]; dataIndex += 1; byteAdd += 1;}
+        if (b4[2] != 0xff) {ret[dataIndex] = b3[1]; dataIndex += 1; byteAdd += 1;}
+        if (b4[3] != 0xff) {ret[dataIndex] = b3[2]; dataIndex += 1; byteAdd += 1;}
+
+        byteCount += byteAdd;
+        if(byteCount >= 4)
+        {
+        	floatCount  += 1;
+        	byteCount   -= 4;
+        	if(floatCount > dataSize)
+        	{
+        		errMsg  = "Base64 decode error\nDecoded float data count does not match output data size specified.\n";
+        		errMsg += "Decoded float data count   : " + std::to_string(floatCount) + "\n";
+        		errMsg += "Output data size specified : " + std::to_string(dataSize) + "\n";
+        		throw std::runtime_error(errMsg);
+        	}
+        }
+
+    }
+
+    if(floatCount != dataSize)
+    {
+    	errMsg  = "Base64 decode error\nDecoded float data count does not match output data size specified.\n";
+    	errMsg += "Decoded float data count   : " + std::to_string(floatCount) + "\n";
+    	errMsg += "Output data size specified : " + std::to_string(dataSize) + "\n";
+    	throw std::runtime_error(errMsg);
+    }
+
+}
+
+
+// This member function inserts decoded bytes directly into the double values
+// pointed to by floatDataPtr. This member function requires encoded_string to be
+// a multiple of 4. This will always be the case if the class member function
+// encode(...) is used to encode the data.
+
+void decode(const std::string_view& encoded_string, size_t dataSize, float* floatDataPtr)
 {
     // Make sure string length is a multiple of 4
 
