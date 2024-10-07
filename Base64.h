@@ -116,6 +116,34 @@ long decodeSingleLong(const std::string& encodedData)
 }
 
 
+std::string encodeSize_t(const std::vector<size_t>& size_tData)
+{
+	if (size_tData.empty()) return "";
+    return encode((const BYTE*)&size_tData[0], (size_t)(size_tData.size()*sizeof(size_t)));
+}
+
+std::vector<size_t> decodeSize_t(const std::string& encodedData)
+{
+	std::vector<BYTE>   dataDecoded = decode(encodedData);
+	std::vector<size_t> data(dataDecoded.size()/sizeof(size_t));
+	std::memcpy(&data[0],&dataDecoded[0],dataDecoded.size());
+	return data;
+}
+
+
+std::string encodeSingleSize_t(const size_t& size_tData)
+{
+    return encode((const BYTE*)&size_tData, (size_t)(sizeof(size_tData)));
+}
+
+long decodeSingleSize_t(const std::string& encodedData)
+{
+	std::vector<BYTE>   dataDecoded = decode(encodedData);
+	long                data;
+	std::memcpy(&data,&dataDecoded[0],dataDecoded.size());
+	return data;
+}
+
 std::string encodeSingleFloat(const float& floatData)
 {
     return encode((const BYTE*)&floatData, (size_t)(sizeof(float)));
