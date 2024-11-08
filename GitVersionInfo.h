@@ -27,6 +27,7 @@
 #include <string>
 
 #ifndef GIT_VERSION_INFO_
+#define GIT_VERSION_INFO_
 
 #ifndef GIT_REV_COUNT_
 #define GIT_REV_COUNT_ 0
