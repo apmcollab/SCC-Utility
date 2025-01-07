@@ -95,6 +95,23 @@ class Logger
     fflush(LogFout);
     }
 
+    void timeStamp(std::string message, long index)
+    {
+    struct tm when;
+    time_t now; time(&now);
+    when = *localtime( &now );
+
+    //Www Mmm dd hh:mm:ss yyyy
+    std::string dateString(asctime( &when ));
+
+    std::vector<std::string> dateTokens;
+    sUtilities.Tokenize(dateString,dateTokens," \n\r\0");
+
+    fprintf(LogFout,":  %s  : %s %ld\n",dateTokens[3].c_str(), message.c_str(),index); fflush(LogFout);
+    fflush(LogFout);
+    }
+
+
     void timeAndDateStamp(std::string message = "")
     {
     struct tm when;
@@ -113,6 +130,27 @@ class Logger
 												dateTokens[2].c_str(),
 												dateTokens[4].c_str(),
 												message.c_str()); fflush(LogFout);
+    fflush(LogFout);
+    }
+
+    void timeAndDateStamp(std::string message, long index)
+    {
+    struct tm when;
+    time_t now; time(&now);
+    when = *localtime( &now );
+
+    //Www Mmm dd hh:mm:ss yyyy
+    std::string dateString(asctime( &when ));
+
+    std::vector<std::string> dateTokens;
+    sUtilities.Tokenize(dateString,dateTokens," \n\r\0");
+
+    fprintf(LogFout,":  %s  : %s %s %s %s :  %s %ld\n",dateTokens[3].c_str(),
+    		                                    dateTokens[0].c_str(),
+    		                                    dateTokens[1].c_str(),
+												dateTokens[2].c_str(),
+												dateTokens[4].c_str(),
+												message.c_str(),index); fflush(LogFout);
     fflush(LogFout);
     }
 
