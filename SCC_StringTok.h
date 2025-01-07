@@ -55,12 +55,12 @@ public:
     // nextTokenPtr() returns a char* pointer to next token if available and updates
     // the token index, otherwise returns a null pointer
 
-	const char* nextTokenPtr()
+	char* nextTokenPtr()
 	{
-		const char* returnPtr = nullptr;
+		char* returnPtr = nullptr;
 		if(tokenIndex < tokenCount)
 		{
-	    returnPtr = tokens[tokenIndex].c_str();
+	    returnPtr = tokens[tokenIndex].data();
 		tokenIndex += 1;
 		return returnPtr;
 		}
@@ -109,6 +109,7 @@ public:
 	//
 	void initialize(const std::string& str,const std::string& delimiters = " ")
 	{
+	initialize();
 	tokenize(str,tokens,delimiters);
 	tokenCount = tokens.size();
 	tokenIndex = 0;
