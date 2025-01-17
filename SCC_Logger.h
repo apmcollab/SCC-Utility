@@ -7,7 +7,7 @@
 
 //
 // A not particularly sophisticated class whose instances using stdio (C) output (for formatting reasons)
-// functionality to output to a log file using a specified file pointer.
+// functionality to output to a log file using a file pointer set when the class is initialized.
 //
 // After each output invocation the buffer is flushed so that file contents are
 // updated immediately.
@@ -16,7 +16,8 @@
 //
 // The destruction of a class instance does not close the file accessed by the FILE pointer.
 //
-
+// If instance is a null instance, then all invocations are noOp's.
+//
 /*
 #############################################################################
 #
@@ -75,12 +76,14 @@ class Logger
 
     bool isLogging()
     {
-    if(LogFout != 0) return true;
+    if(LogFout != 0) {return true;}
     return false;
     }
 
     void timeStamp(std::string message = "")
     {
+    if(not isLogging()) {return;}
+
     struct tm when;
     time_t now; time(&now);
     when = *localtime( &now );
@@ -97,6 +100,8 @@ class Logger
 
     void timeStamp(std::string message, long index)
     {
+    if(not isLogging()) {return;}
+
     struct tm when;
     time_t now; time(&now);
     when = *localtime( &now );
@@ -114,6 +119,8 @@ class Logger
 
     void timeAndDateStamp(std::string message = "")
     {
+    if(not isLogging()) {return;}
+
     struct tm when;
     time_t now; time(&now);
     when = *localtime( &now );
@@ -135,6 +142,7 @@ class Logger
 
     void timeAndDateStamp(std::string message, long index)
     {
+    if(not isLogging()) {return;}
     struct tm when;
     time_t now; time(&now);
     when = *localtime( &now );
@@ -178,11 +186,13 @@ class Logger
 
     void operator()(const std::string& message)
     {
+    if(not isLogging()) {return;}
     fprintf(LogFout,"XXXXXXXXXXX    %s\n",message.c_str()); fflush(LogFout);
     }
 
     void operator()(const std::string& messageWithFormat, long val1)
     {
+    if(not isLogging()) {return;}
     std::string output("XXXXXXXXXXX    ");
     output.append(messageWithFormat);
     fprintf(LogFout,output.c_str(),val1); fflush(LogFout);
@@ -190,6 +200,7 @@ class Logger
 
     void operator()(const std::string& messageWithFormat, double val1)
     {
+    if(not isLogging()) {return;}
     std::string output("XXXXXXXXXXX    ");
     output.append(messageWithFormat);
     fprintf(LogFout,output.c_str(),val1); fflush(LogFout);
@@ -197,6 +208,7 @@ class Logger
 
     void operator()(const std::string& messageWithFormat, double val1, double val2 )
     {
+    if(not isLogging()) {return;}
     std::string output("XXXXXXXXXXX    ");
     output.append(messageWithFormat);
     fprintf(LogFout,output.c_str(),val1,val2); fflush(LogFout);
@@ -204,6 +216,7 @@ class Logger
 
     void operator()(const std::string& messageWithFormat, long val1, double val2 )
     {
+    if(not isLogging()) {return;}
     std::string output("XXXXXXXXXXX    ");
     output.append(messageWithFormat);
     fprintf(LogFout,output.c_str(),val1,val2); fflush(LogFout);
@@ -211,6 +224,7 @@ class Logger
 
     void operator()(const std::string& messageWithFormat, long val1, double val2, double val3 )
     {
+    if(not isLogging()) {return;}
     std::string output("XXXXXXXXXXX    ");
     output.append(messageWithFormat);
     fprintf(LogFout,output.c_str(),val1,val2,val3); fflush(LogFout);
